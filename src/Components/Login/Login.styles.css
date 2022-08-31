@@ -1,0 +1,34 @@
+.container{
+    @apply  relative  justify-center h-auto top-52 w-full m-auto p-10  md:p-0 md:max-w-lg ;
+}
+.card{
+    @apply w-full m-auto relative;
+}
+.cardContainer{
+    @apply  text-center  justify-center items-center m-auto md:p-10 sm:p-10 lg:p-20  ;
+}
+.txtField{
+    @apply w-full my-1
+}
+.btnSubmitLogin{
+    @apply bg-blue-800 hover:bg-blue-900 text-neutral-50 text-sm my-2  ;
+}
+.errorMessage{
+    @apply text-red-600;
+}
+.divGoogle{
+    @apply  flex  justify-center items-center;
+}
+.txtSignIn{
+    @apply text-center mb-4;
+}
+.divGithub{
+    @apply  flex  justify-center items-center;
+}
+.btnGithub{
+    @apply w-56 p-2 bg-zinc-900 text-base text-white hover:bg-zinc-700;
+}
+.btnCenterLogin{
+    @apply   inset-y-0 right-0    mb-2 w-64 justify-center items-center;
+}
+ 

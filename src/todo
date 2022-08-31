@@ -1,0 +1,198 @@
+Hacer el add method
+delete
+edit 
+get LISTO
+
+
+agragar persona cambiarlo por un icono de un mas
+Acciones
+
+
+mostrar las informacion
+crear una ventana independiente 
+
+columna con el nombre 
+
+otra apellido
+
+solo read
+
+nombre apellido cedula 
+
+
+Nombre Apellido y LAS Acciones
+
+Generear una visual 
+
+# Asignacion 1
+
+0. agragar la persona actualice a la lista
+1. boton agragar LISTO
+2. genera el visual de solo lectura  LISTO
+3. mostral las columnas nombre apellido LISTO
+4. Redireccion creo usuario al login LISTO -> pero se puede mejorar con linea de progreso
+5. fecha del dia de hoy y no seleccionar mayor que hoy LISTO
+6. ver porque el post no funciona
+
+---------------------------------------------------------------------------------------------------------------------
+
+# Asignacion 2
+
+0. verificar si puedo al igual que node separar las clases html js css  LISTO
+1. tratar de agrupar dentro de container los diferentes modulos de la app e.j. file(Login) -> su componente
+2. entidad usuario o entidad persona 
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+Asignacion 3
+
+1. poner todos los estilos de una clase css en funcion css, estos estilos deben de ser responsive.
+2. Hacer la clase ruter.
+
+Los modulos hacen referencia a:
+
+persona:
+cuenta:
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+Asignacion 4
+
+Extraer las entidades a un componente independiente.
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+Asignacion 5
+
+Add Formik and yup para tener una mejor funcion en los formularios.
+
+
+Asignacion 6
+
+add env. variables.
+
+Asignacion 7
+
+Añadir dos botones sobre el logout y la informacion del perfil
+
+Gestor de base de datos, sql server mysql,
+framework para manejar el backend
+
+Asignacion 8
+
+mejorar el icono del log out e incluirlo en el boton del login
+
+te permita almacenar los datos del crud de la web que utilizo
+
+Los mismos servicios web:
+
+    Adicionar 
+    put
+    eliminar
+    CRUD
+
+UUID para el identificador unico, utilizando anotaciones hexadecimal
+
+------------------------------------------------------------------------------
+
+Asignacion 9
+
+Cambiar el campo id por otro e.x. cedula
+
+autenticacion de las rutas.
+y las credentiales
+
+
+tablas de 
+
+roles crud completo
+usuarios crud completo
+
+rol 
+
+    administrador : todo acceso a todo nuestro sistema.
+    *invitado: solamente podria ver la lista de personas que estan en nuestro sistema.
+    *creacion de persona: crear o modificar las personas que estan en nuestro sismtema.
+    nuevo usuario: no puede ver ningun elemento de persona.
+
+Usuario nuevo 
+
+    nada de datos
+
+administrador 
+
+    todos los roles
+    todos los usuarios
+    todas las personas
+
+
+credenciales: Roles.
+              Roles => Adiministrador, invitado, Usuario que puede crear o modificar las personas.
+
+Todos los Usuarios registrados, No importando sus roles, el administrador, los puede ver y cambiar su rol.
+
+
+
+Cuantos administradores pueden, haber?.
+
+
+WorkFlow General:
+    login
+    autenticacion
+        comprobacion en la base de datos
+    acceder al componente de ViewElement con tu rol
+
+    
+    
+WorkFlow Icono:
+    Dependiendo de tu rol, se renderizara o no, la opcion para ver usuarios.
+
+WorkFlow Accion1:
+    Podras ver vista de usuario:
+    crear,ver,editar roles,borrar usuarios.
+
+WorkFlow Accion2:
+    Podras ver a las personas:
+        crear,ver,editar roles,borrar personas.
+
+WorkFlow Accion3:
+    Ver personas
+    
+WorkFlow administrador extends General:
+    Por default sera la vista de personas
+    WorkFlow Icono
+        WorkFlow Accion1
+    WorkFlow Accion2
+    
+WorkFlow Usuario nuevo extends General:
+     
+WorkFlow invitado extends General:
+    WorkFlow Accion3
+
+WorkFlow UsuarioMid extends General:
+    WorkFlow Accion2
+
+
+Para el proceso de obtener la data se puede implementar el patron observer.
+
+Para asignar los roles, puedo utilizar el decorador.
+
+
+
+
+#Fase 1 
+En github.route.js, podemos hacer la peticion en la
+db, para poder asignar el rol del usuario.
+
+
+
+#Fase 2
+
+
+
+Asignacion 10
+
+hacer los endpoint seguros mediante que tipo de credenciales tengas
