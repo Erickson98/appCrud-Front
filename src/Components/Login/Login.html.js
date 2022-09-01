@@ -23,7 +23,7 @@ const Login = (props) => {
         socket.emit("getNewUser");
       }
 
-      return enable.msg !== "success"
+      return enable.msg === "success"
         ? props.autentication(true)
         : "no autenticated";
     }
