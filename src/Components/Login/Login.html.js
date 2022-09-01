@@ -1,33 +1,34 @@
-import { Grid, Typography, CardContent, Button } from '@material-ui/core'
-import React, { useContext } from 'react'
-import Card from '@material-ui/core/Card'
-import './Login.styles.css'
-import { succesLoginGoogle } from '../Auth/Google.auth'
-import { succesLoginGithub } from '../Auth/Github.auth'
-import { useEffect } from 'react'
-import { confirmedCredentials } from '../../Ruter/Account'
+import { Grid, Typography, CardContent, Button } from "@material-ui/core";
+import React, { useContext } from "react";
+import Card from "@material-ui/core/Card";
+import "./Login.styles.css";
+import { succesLoginGoogle } from "../Auth/Google.auth";
+import { succesLoginGithub } from "../Auth/Github.auth";
+import { useEffect } from "react";
+import { confirmedCredentials } from "../../Ruter/Account";
 import {
   GoogleLoginButton,
   GithubLoginButton,
-} from 'react-social-login-buttons'
+} from "react-social-login-buttons";
 
-import { SocketContext } from '../Entities/socket.io'
+import { SocketContext } from "../Entities/socket.io";
 
 const Login = (props) => {
-  const socket = useContext(SocketContext)
+  const socket = useContext(SocketContext);
   useEffect(() => {
     async function getAutentication() {
-      const enable = await confirmedCredentials()
-      if (enable.newUser === 'enable' && enable.msg === 'success') {
-        socket.emit('getNewUser')
+      const enable = await confirmedCredentials();
+      console.log(enable);
+      if (enable.newUser === "enable" && enable.msg === "success") {
+        socket.emit("getNewUser");
       }
 
-      return enable.msg === 'success'
+      return enable.msg === "success"
         ? props.autentication(true)
-        : 'no autenticated'
+        : "no autenticated";
     }
-    getAutentication()
-  }, [])
+    getAutentication();
+  }, []);
   return (
     <Grid className="container" container>
       <Card className="card">
@@ -58,7 +59,7 @@ const Login = (props) => {
         </CardContent>
       </Card>
     </Grid>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

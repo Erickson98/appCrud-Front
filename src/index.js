@@ -21,6 +21,7 @@ const App = () => {
   useEffect(() => {
     async function getAutentication() {
       const enable = await confirmedRefreshToken();
+      console.log(enable);
       return enable.msg === "success"
         ? handleAutentication(true)
         : "no autenticated";
