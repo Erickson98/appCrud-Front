@@ -9,7 +9,7 @@ import User from "./Components/User/User.html";
 import { confirmedRefreshToken } from "./Ruter/Account";
 import { SocketContext, socket } from "./Components/Entities/socket.io";
 const App = () => {
-  const [autentication, setAutentication] = useState(false);
+  const [autentication, setAutentication] = useState(true);
   const [admin, setAdmin] = useState(false);
   const handleAutentication = (value) => {
     setAutentication(value);
