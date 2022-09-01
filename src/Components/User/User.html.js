@@ -13,31 +13,31 @@ import {
   Avatar,
   Menu,
   MenuItem,
-} from '@material-ui/core'
-import GroupIcon from '@material-ui/icons/Group'
-import MaterialTable from 'material-table'
-import { General } from './user.props.materialTable'
-import { Styles } from './User.propsMaterialUi'
-import { useEffect, useState, useContext } from 'react'
-import { useControlEvent, useEntite, useEntiteUser } from './User.event'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import './User.styles.css'
-import UserEntity from '../Entities/User.entity'
-import UserSchema from '../Entities/UserSchema.entity'
-import { Account, confirmedAdmin } from '../../Ruter/Account'
-import { useNavigate } from 'react-router-dom'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
+} from "@material-ui/core";
+import GroupIcon from "@material-ui/icons/Group";
+import MaterialTable from "material-table";
+import { General } from "./user.props.materialTable";
+import { Styles } from "./User.propsMaterialUi";
+import { useEffect, useState, useContext } from "react";
+import { useControlEvent, useEntite, useEntiteUser } from "./User.event";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import "./User.styles.css";
+import UserEntity from "../Entities/User.entity";
+import UserSchema from "../Entities/UserSchema.entity";
+import { Account, confirmedAdmin } from "../../Ruter/Account";
+import { useNavigate } from "react-router-dom";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import userList from '../Entities/UserList'
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import userList from "../Entities/UserList";
 
-import { SocketContext } from '../Entities/socket.io'
+import { SocketContext } from "../Entities/socket.io";
 
 const User = (props) => {
-  const socket = useContext(SocketContext)
-  const styles = Styles()
+  const socket = useContext(SocketContext);
+  const styles = Styles();
   let [
     dataUser,
     modalEdit,
@@ -56,75 +56,78 @@ const User = (props) => {
     eventElementAccionUser,
     eventUpdateData,
     eventUsers,
-  ] = useControlEvent()
-  const [User, eventUpdateUser] = useEntite()
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [currency, setCurrency] = useState()
-  const [user, eventUpdateEditUser] = useEntiteUser()
-  const navigate = useNavigate()
+  ] = useControlEvent();
+  const [User, eventUpdateUser] = useEntite();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [currency, setCurrency] = useState();
+  const [user, eventUpdateEditUser] = useEntiteUser();
+  const navigate = useNavigate();
 
   const handleChangeMenu = (event) => {
-    setCurrency(event.target.value)
-  }
+    setCurrency(event.target.value);
+  };
 
   const userAdmin = () => {
-    window.open('http://localhost:3000/ViewElement', '_self')
-  }
+    window.open(
+      "https://63107d8c01ad3a4be20ed88c--shiny-tanuki-6e7bda.netlify.app/ViewElement",
+      "_self"
+    );
+  };
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
   const handleClickAway = () => {
-    setAnchorEl(false)
-  }
+    setAnchorEl(false);
+  };
 
   const handleRoles = (values, currency) => {
-    eventSubmitEditRol(values, currency)
+    eventSubmitEditRol(values, currency);
 
-    const list = userList[0].filter((x) => x.username == values.Name)
-    socket.emit('changeRole', { nameUser: values.Name, idUser: list })
-    socket.emit('updateOnViewElement', { nameUser: values.Name, idUser: list })
-  }
+    const list = userList[0].filter((x) => x.username == values.Name);
+    socket.emit("changeRole", { nameUser: values.Name, idUser: list });
+    socket.emit("updateOnViewElement", { nameUser: values.Name, idUser: list });
+  };
   const handleDeletedUser = () => {
-    eventElementDeleteUser()
-    const list = userList[0].filter((x) => x.username == User.Name)
-    socket.emit('deleteUser', { nameUser: User.Name, idUser: list })
-  }
+    eventElementDeleteUser();
+    const list = userList[0].filter((x) => x.username == User.Name);
+    socket.emit("deleteUser", { nameUser: User.Name, idUser: list });
+  };
 
   useEffect(() => {
-    eventGetElementUser()
+    eventGetElementUser();
     async function getData() {
-      const element = await Account()
+      const element = await Account();
 
-      eventUpdateEditUser(element.user)
+      eventUpdateEditUser(element.user);
     }
-    getData()
-  }, [])
+    getData();
+  }, []);
 
   useEffect(() => {
-    socket.on('UserList', () => {
+    socket.on("UserList", () => {
       setTimeout(() => {
-        eventGetElementUser()
-      }, 1000)
-    })
+        eventGetElementUser();
+      }, 1000);
+    });
 
-    socket.on('newRole', (message) => {
+    socket.on("newRole", (message) => {
       async function checkAdmin() {
         setTimeout(async () => {
-          const element = await Account()
-          await confirmedAdmin()
+          const element = await Account();
+          await confirmedAdmin();
 
-          if (element.msg !== 'success') {
-            props.admin(false)
+          if (element.msg !== "success") {
+            props.admin(false);
           }
-        }, 1000)
+        }, 1000);
       }
 
-      checkAdmin()
-    })
-  }, [socket])
+      checkAdmin();
+    });
+  }, [socket]);
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div className="mainContent">
@@ -145,8 +148,8 @@ const User = (props) => {
                         <Paper className="cardDropDownMenu">
                           <div className="containerDropDownMenu">
                             <div className="imgDropDown">
-                              {' '}
-                              <Avatar src={user.image} />{' '}
+                              {" "}
+                              <Avatar src={user.image} />{" "}
                             </div>
 
                             <div className="textName">{user.name}</div>
@@ -157,7 +160,7 @@ const User = (props) => {
                               <Button
                                 fullWidth={true}
                                 onClick={() => {
-                                  navigate('/ViewElement')
+                                  navigate("/ViewElement");
                                 }}
                               >
                                 Regresar
@@ -180,27 +183,27 @@ const User = (props) => {
         <MaterialTable
           columns={General.firstColumn}
           data={dataUser.filter(
-            (x) => x.Identificator !== process.env.REACT_APP_API_ROL_ADMIN_USER,
+            (x) => x.Identificator !== process.env.REACT_APP_API_ROL_ADMIN_USER
           )}
-          title={''}
+          title={""}
           actions={[
             {
-              icon: 'edit',
-              tooltip: 'Editar elemento',
+              icon: "edit",
+              tooltip: "Editar elemento",
               onClick: (event, rowData) =>
-                eventElementAccionUser(rowData, 'Edit', eventUpdateUser),
+                eventElementAccionUser(rowData, "Edit", eventUpdateUser),
             },
             {
-              icon: 'delete',
-              tooltip: 'Eliminar elemento',
+              icon: "delete",
+              tooltip: "Eliminar elemento",
               onClick: (event, rowData) =>
-                eventElementAccionUser(rowData, 'Deleted', eventUpdateUser),
+                eventElementAccionUser(rowData, "Deleted", eventUpdateUser),
             },
           ]}
           options={{ actionsColumnIndex: 3 }}
           localization={{
             header: {
-              actions: 'Acciones',
+              actions: "Acciones",
             },
           }}
         />
@@ -212,7 +215,7 @@ const User = (props) => {
                 initialValues={{ ...User }}
                 validationSchema={UserSchema}
                 onSubmit={(values) => {
-                  handleRoles(values, currency)
+                  handleRoles(values, currency);
                 }}
               >
                 {() => (
@@ -231,7 +234,7 @@ const User = (props) => {
                       <ErrorMessage name="Name" />
                     </div>
 
-                    <FormControl className={'formElements'}>
+                    <FormControl className={"formElements"}>
                       <InputLabel id="demo-simple-select-label">Rol</InputLabel>
                       <Select
                         labelId="Rol"
@@ -240,10 +243,10 @@ const User = (props) => {
                         defaultValue={User.Rol}
                         onChange={handleChangeMenu}
                       >
-                        <MenuItem value={'Admin'}>Admin</MenuItem>
-                        <MenuItem value={'Invite'}>Invitado</MenuItem>
-                        <MenuItem value={'Creational'}>Creacional</MenuItem>
-                        <MenuItem value={'New'}>Nuevo</MenuItem>
+                        <MenuItem value={"Admin"}>Admin</MenuItem>
+                        <MenuItem value={"Invite"}>Invitado</MenuItem>
+                        <MenuItem value={"Creational"}>Creacional</MenuItem>
+                        <MenuItem value={"New"}>Nuevo</MenuItem>
                       </Select>
                     </FormControl>
                     <div className="errorMessage">
@@ -255,15 +258,15 @@ const User = (props) => {
                         className="btnSubmit"
                         {...styles.propsBtnSubmitEditPush}
                       >
-                        {' '}
-                        Editar{' '}
+                        {" "}
+                        Editar{" "}
                       </Button>
                       <Button
                         {...styles.propsBtnSubmitEditCancel}
                         onClick={eventModalEdit}
                       >
-                        {' '}
-                        Cancelar{' '}
+                        {" "}
+                        Cancelar{" "}
                       </Button>
                     </div>
                   </Form>
@@ -294,11 +297,11 @@ const User = (props) => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {'Eliminar elemento'}
+            {"Eliminar elemento"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              El siguiente elemento se eliminara, seguro que quieres eliminar a{' '}
+              El siguiente elemento se eliminara, seguro que quieres eliminar a{" "}
               {<b>{User.Name}</b>}?
             </DialogContentText>
           </DialogContent>
@@ -316,7 +319,7 @@ const User = (props) => {
         </Dialog>
       </div>
     </ClickAwayListener>
-  )
-}
+  );
+};
 
-export default User
+export default User;
