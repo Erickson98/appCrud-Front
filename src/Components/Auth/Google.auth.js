@@ -1,4 +1,3 @@
- 
 export const succesLoginGoogle = async (props) => {
-  window.open("http://localhost:4000/auth/google", "_self");
-};
+  window.open('https://appintern78.herokuapp.com/auth/google', '_self')
+}

@@ -54,7 +54,10 @@ export const useControlEvent = (props) => {
     eventModalAdd()
     const enable = await confirmedCredentials()
     if (enable?.msg == 'redirected') {
-      return window.open('http://localhost:4000/auth/logout', '_self')
+      return window.open(
+        'https://appintern78.herokuapp.com/auth/logout',
+        '_self',
+      )
     }
     const newPerson = await Person().createPerson(values)
     subject.setData(newPerson.data)
@@ -67,7 +70,10 @@ export const useControlEvent = (props) => {
   const eventSubmitEdit = async (values) => {
     const enable = await confirmedCredentials()
     if (enable?.msg == 'redirected') {
-      return window.open('http://localhost:4000/auth/logout', '_self')
+      return window.open(
+        'https://appintern78.herokuapp.com/auth/logout',
+        '_self',
+      )
     }
     delete values._id
     await Person().updatePerson(values, id)
@@ -81,7 +87,10 @@ export const useControlEvent = (props) => {
   const eventElementDelete = async () => {
     const enable = await confirmedCredentials()
     if (enable?.msg == 'redirected') {
-      return window.open('http://localhost:4000/auth/logout', '_self')
+      return window.open(
+        'https://appintern78.herokuapp.com/auth/logout',
+        '_self',
+      )
     }
     eventModalDelete()
     await Person().deletePerson(id)

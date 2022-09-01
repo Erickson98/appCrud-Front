@@ -1,7 +1,10 @@
 export const Account = async () => {
-  const element = await fetch('http://localhost:4000/auth/login/success', {
-    credentials: 'include',
-  })
+  const element = await fetch(
+    'https://appintern78.herokuapp.com/auth/login/success',
+    {
+      credentials: 'include',
+    },
+  )
     .then((response) => {
       if (response.status === 200) return response.json()
       throw new Error('authentication has been failed!')
@@ -16,9 +19,12 @@ export const Account = async () => {
 }
 
 export const confirmedRefreshToken = async () => {
-  return await fetch('http://localhost:4000/auth/checkAutherization', {
-    credentials: 'include',
-  })
+  return await fetch(
+    'https://appintern78.herokuapp.com/auth/checkAutherization',
+    {
+      credentials: 'include',
+    },
+  )
     .then((response) => {
       if (response.status === 200) return response.json()
       throw new Error('authentication has been failed!')
@@ -32,9 +38,12 @@ export const confirmedRefreshToken = async () => {
 }
 
 export const confirmedCredentials = async () => {
-  return await fetch('http://localhost:4000/auth/checkCredentials', {
-    credentials: 'include',
-  })
+  return await fetch(
+    'https://appintern78.herokuapp.com/auth/checkCredentials',
+    {
+      credentials: 'include',
+    },
+  )
     .then((response) => {
       if (response.status === 200) return response.json()
       throw new Error('authentication has been failed!')
@@ -48,7 +57,7 @@ export const confirmedCredentials = async () => {
 }
 
 export const confirmedAdmin = async () => {
-  return await fetch('http://localhost:4000/auth/checkAdmin', {
+  return await fetch('https://appintern78.herokuapp.com/auth/checkAdmin', {
     credentials: 'include',
   })
     .then((response) => {
@@ -63,7 +72,7 @@ export const confirmedAdmin = async () => {
     })
 }
 export const deleteCookies = async () => {
-  return await fetch('http://localhost:4000/auth/deleteCookies', {
+  return await fetch('https://appintern78.herokuapp.com/auth/deleteCookies', {
     credentials: 'include',
   })
     .then((response) => {

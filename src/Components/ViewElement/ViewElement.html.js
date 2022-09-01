@@ -76,7 +76,7 @@ const ViewElements = (props) => {
     const list = userList[0].filter((x) => x.username != user.name)
     socket.emit('logOut', list)
     await UserRouter().delete(user.id)
-    window.open('http://localhost:4000/auth/logout', '_self')
+    window.open('https://appintern78.herokuapp.com/auth/logout', '_self')
   }
   const handleClick = (event) => {
     setAnchorEl(!anchorEl)
