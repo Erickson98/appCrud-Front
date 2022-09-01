@@ -1,5 +1,0 @@
-[[redirects]]
-
-    from = '/*'
-    to = '/ViewElement'
-    status = 200
