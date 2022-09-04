@@ -72,7 +72,7 @@ const ViewElements = (props) => {
   const [user, eventUpdateEditUser] = useEntiteUser()
 
   const logOut = async () => {
-    props.autentication()
+    props.autentication(false)
     const list = userList[0].filter((x) => x.username != user.name)
     socket.emit('logOut', list)
     await UserRouter().delete(user.id)
