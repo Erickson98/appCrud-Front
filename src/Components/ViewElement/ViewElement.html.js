@@ -70,7 +70,7 @@ const ViewElements = (props) => {
   let miStorage = window.localStorage;
 
   const logOut = async () => {
-    props.autentication(); //props.autentication(false);
+    props.autentication();
     const list = userList[0].filter((x) => x.username !== user.name);
     socket.emit("logOut", list);
     await UserRouter().delete(user.id);
@@ -123,7 +123,7 @@ const ViewElements = (props) => {
     async function getData() {
       if (!isCancelled) {
         const element = await Account();
-        socket.emit("logIn"); //no se utiliza
+        socket.emit("logIn");
         eventUpdateEditUser(element.user);
 
         eventGetElement(element.user?.rol);
