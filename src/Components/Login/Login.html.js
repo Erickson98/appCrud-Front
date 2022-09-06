@@ -12,6 +12,7 @@ import {
 } from "react-social-login-buttons";
 
 import { SocketContext } from "../Entities/socket.io";
+let miStorage = window.localStorage;
 
 const Login = (props) => {
   const socket = useContext(SocketContext);
@@ -21,6 +22,12 @@ const Login = (props) => {
       console.log(enable);
       if (enable.newUser === "enable" && enable.msg === "success") {
         socket.emit("getNewUser");
+        if (miStorage.getItem("autori") === "denied") {
+          miStorage.setItem("autori", "enable");
+        }
+        if (!miStorage.getItem("autori")) {
+          miStorage.setItem("autori", "enable");
+        }
       }
 
       return enable.msg === "success"

@@ -11,7 +11,6 @@ import {
   DialogTitle,
   TextField,
   Avatar,
-  Menu,
   MenuItem,
 } from "@material-ui/core";
 import GroupIcon from "@material-ui/icons/Group";
@@ -42,20 +41,14 @@ const User = (props) => {
     dataUser,
     modalEdit,
     modalDelete,
-    modalView,
     modalUser,
-    userName,
-    usersList,
     eventModalEdit,
     eventModalDelete,
-    eventModalView,
     eventModalUser,
     eventSubmitEditRol,
     eventGetElementUser,
     eventElementDeleteUser,
     eventElementAccionUser,
-    eventUpdateData,
-    eventUsers,
   ] = useControlEvent();
   const [User, eventUpdateUser] = useEntite();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -67,18 +60,10 @@ const User = (props) => {
     setCurrency(event.target.value);
   };
 
-  const userAdmin = () => {
-    window.open(
-      "https://63107d8c01ad3a4be20ed88c--shiny-tanuki-6e7bda.netlify.app/ViewElement",
-      "_self"
-    );
-  };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+
   const handleClickAway = () => {
     setAnchorEl(false);
   };
@@ -113,7 +98,7 @@ const User = (props) => {
       }, 1000);
     });
 
-    socket.on("newRole", (message) => {
+    socket.on("newRole", () => {
       async function checkAdmin() {
         setTimeout(async () => {
           const element = await Account();

@@ -17,36 +17,33 @@ import {
   DialogTitle,
   TextField,
   Avatar,
-  Menu,
-  MenuItem,
-} from '@material-ui/core'
-import GroupIcon from '@material-ui/icons/Group'
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline'
-import MaterialTable from 'material-table'
-import CloseIcon from '@material-ui/icons/Close'
-import { General } from './ViewElement.props.materialTable'
-import { Styles } from './ViewElement.propsMaterialUi'
-import { useEffect, useState } from 'react'
-import { useControlEvent, useEntite, useEntiteUser } from './ViewElement.event'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { personSchema, setTime } from '../Entities/Person.entity'
-import personEntity from '../Entities/Person.entity'
-import './ViewElement.styles.css'
-import UserInstance from '../../helpers/User.Rol.Decorator/User.Class'
-import UserEntity from '../Entities/User.entity'
-import userList from '../Entities/UserList'
-import { Account, confirmedAdmin, deleteCookies } from '../../Ruter/Account'
-import { useNavigate } from 'react-router-dom'
-import React, { useContext } from 'react'
+} from "@material-ui/core";
+import GroupIcon from "@material-ui/icons/Group";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import MaterialTable from "material-table";
+import CloseIcon from "@material-ui/icons/Close";
+import { General } from "./ViewElement.props.materialTable";
+import { Styles } from "./ViewElement.propsMaterialUi";
+import { useEffect, useState } from "react";
+import { useControlEvent, useEntite, useEntiteUser } from "./ViewElement.event";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { personSchema, setTime } from "../Entities/Person.entity";
+import personEntity from "../Entities/Person.entity";
+import "./ViewElement.styles.css";
+import UserInstance from "../../helpers/User.Rol.Decorator/User.Class";
+import userList from "../Entities/UserList";
+import { Account, confirmedAdmin } from "../../Ruter/Account";
+import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
 
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import UserRouter from '../../Ruter/UserRouter'
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import UserRouter from "../../Ruter/UserRouter";
 
-import { SocketContext } from '../Entities/socket.io'
+import { SocketContext } from "../Entities/socket.io";
 
 const ViewElements = (props) => {
-  const socket = useContext(SocketContext)
-  const styles = Styles()
+  const socket = useContext(SocketContext);
+  const styles = Styles();
   const [
     data,
     modalAdd,
@@ -65,102 +62,126 @@ const ViewElements = (props) => {
     eventElementAccion,
     eventElementDelete,
     eventUpdateData,
-  ] = useControlEvent(props)
-  const [person, eventUpdateEdit] = useEntite()
-  const [anchorEl, setAnchorEl] = useState(null)
-  const navigate = useNavigate()
-  const [user, eventUpdateEditUser] = useEntiteUser()
+  ] = useControlEvent(props);
+  const [person, eventUpdateEdit] = useEntite();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+  const [user, eventUpdateEditUser] = useEntiteUser();
+  let miStorage = window.localStorage;
 
   const logOut = async () => {
-    props.autentication(false)
-    const list = userList[0].filter((x) => x.username != user.name)
-    socket.emit('logOut', list)
-    await UserRouter().delete(user.id)
-    window.open('https://appintern78.herokuapp.com/auth/logout', '_self')
-  }
-  const handleClick = (event) => {
-    setAnchorEl(!anchorEl)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
+    props.autentication(); //props.autentication(false);
+    const list = userList[0].filter((x) => x.username !== user.name);
+    socket.emit("logOut", list);
+    await UserRouter().delete(user.id);
+    let miStorage = window.localStorage;
+    miStorage.setItem("autori", "denied");
+    miStorage.setItem("admin", "denied");
+    window.open("https://appintern78.herokuapp.com/auth/logout", "_self");
+  };
+  const handleClick = () => {
+    setAnchorEl(!anchorEl);
+  };
+
   const handleClickAway = () => {
-    setAnchorEl(false)
-  }
+    setAnchorEl(false);
+  };
   useEffect(async () => {
-    const element = await Account()
+    let isCancelled = false;
+    if (!isCancelled) {
+      const element = await Account();
 
-    const username = element.user.name
-    socket.auth = { username }
+      const username = element.user.name;
+      socket.auth = { username };
 
-    socket.emit('newConnection', { username })
-  }, [])
+      socket.emit("newConnection", { username });
+    }
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
   useEffect(() => {
+    let isCancelled = false;
+
     async function checkAdmin() {
-      const element = await confirmedAdmin()
-      if (element.msg === 'success') {
-        props.admin(true)
+      if (!isCancelled) {
+        const element = await confirmedAdmin();
+        if (element.msg === "success") {
+          props.admin(true);
+          if (user.rol === "Admin") {
+            miStorage.setItem("admin", "enable");
+          }
+        }
       }
     }
 
-    checkAdmin()
-  }, [])
+    checkAdmin();
+  }, []);
 
   useEffect(() => {
+    let isCancelled = false;
     async function getData() {
-      const element = await Account()
-      socket.emit('logIn') //no se utiliza
-      eventUpdateEditUser(element.user)
-      eventGetElement(element.user?.rol)
+      if (!isCancelled) {
+        const element = await Account();
+        socket.emit("logIn"); //no se utiliza
+        eventUpdateEditUser(element.user);
 
-      const username = element.user.name
-      socket.auth = { username }
+        eventGetElement(element.user?.rol);
+        if (user.rol === "Admin") {
+          miStorage.setItem("admin", "enable");
+        }
+        const username = element.user.name;
+        socket.auth = { username };
+      }
     }
-    getData()
+    getData();
     setTimeout(async () => {
-      const element = await Account()
-      eventUpdateEditUser(element.user)
-      eventGetElement(element.user?.rol)
-    }, 1000)
-  }, [])
+      let isCancelled = false;
+      if (!isCancelled) {
+        const element = await Account();
+        eventUpdateEditUser(element.user);
+        eventGetElement(element.user?.rol);
+
+        if (user.rol === "Admin") {
+          miStorage.setItem("admin", "enable");
+        }
+      }
+    }, 1000);
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
   useEffect(() => {
-    socket.on('users', (users) => {
-      //funciona
-      userList.length = 0
-      userList.push(users)
-    })
-    socket.on('userss', (users) => {
-      //funciona
-      userList.length = 0
-      userList.push(users)
-    })
-    socket.on('updateData', (data) => {
-      //funciona
-      eventUpdateData(data.message)
-    })
-    socket.on('UpdateRol', (userUpdate) => {
-      //hasta el momemto no se utiliza
+    socket.on("users", (users) => {
+      userList.length = 0;
+      userList.push(users);
+    });
+    socket.on("userss", (users) => {
+      userList.length = 0;
+      userList.push(users);
+    });
+    socket.on("updateData", (data) => {
+      eventUpdateData(data.message);
+    });
+    socket.on("UpdateRol", (userUpdate) => {
+      eventUpdateEditUser((x) => [...x, userUpdate.rol]);
+    });
+    socket.on("updateUsersList", (userUpdate) => {
+      userList.length = 0;
+      userList.push(userUpdate);
+    });
 
-      eventUpdateEditUser((x) => [...x, userUpdate.rol])
-    })
-    socket.on('updateUsersList', (userUpdate) => {
-      userList.length = 0
-      userList.push(userUpdate)
-    })
-
-    //se probara ahora
-    socket.on('updateOnViewElement', () => {
+    socket.on("updateOnViewElement", () => {
       setTimeout(async () => {
-        const element = await Account()
-        eventUpdateEditUser(element.user)
-        eventGetElement(element.user?.rol)
-      }, 1000)
-    })
-    socket.on('logOutUser', async () => {
-      await logOut()
-      alert('ds')
-    })
-  }, [socket])
+        const element = await Account();
+        eventUpdateEditUser(element.user);
+        eventGetElement(element.user?.rol);
+      }, 1000);
+    });
+    socket.on("logOutUser", async () => {
+      await logOut();
+    });
+  }, [socket]);
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div className="mainContent">
@@ -181,7 +202,7 @@ const ViewElements = (props) => {
                         <AddCircleOutlineIcon />
                       </Button>
                     ) : (
-                      ''
+                      ""
                     )}
 
                     <Button className="btnUserGoogle" onClick={handleClick}>
@@ -192,18 +213,18 @@ const ViewElements = (props) => {
                         <Paper className="cardDropDownMenu">
                           <div className="containerDropDownMenu">
                             <div className="imgDropDown">
-                              {' '}
-                              <Avatar src={user?.image} />{' '}
+                              {" "}
+                              <Avatar src={user?.image} />{" "}
                             </div>
 
                             <div className="textName">{user?.name}</div>
                             <div className="textEmail">{user?.email}</div>
-                            {user?.rol === 'Admin' && (
+                            {user?.rol === "Admin" && (
                               <div className="">
                                 <Button
                                   fullWidth={true}
                                   onClick={() => {
-                                    navigate('/User/Admin')
+                                    navigate("/User/Admin");
                                   }}
                                 >
                                   Usuarios
@@ -231,15 +252,15 @@ const ViewElements = (props) => {
         <MaterialTable
           columns={General.firstColumn}
           data={data}
-          title={''}
+          title={""}
           actions={UserInstance.getAcciones(
             eventElementAccion,
-            eventUpdateEdit,
+            eventUpdateEdit
           )}
           options={{ actionsColumnIndex: 3 }}
           localization={{
             header: {
-              actions: 'Acciones',
+              actions: "Acciones",
             },
           }}
         />
@@ -250,8 +271,8 @@ const ViewElements = (props) => {
                 initialValues={{ ...personEntity }}
                 validationSchema={personSchema}
                 onSubmit={(values, { resetForm }) => {
-                  eventSubmitAdd(values)
-                  resetForm()
+                  eventSubmitAdd(values);
+                  resetForm();
                 }}
               >
                 {() => (
@@ -326,16 +347,16 @@ const ViewElements = (props) => {
                         className="btnSubmit"
                         {...styles.propsBtnSubmitAdd}
                       >
-                        {' '}
-                        Enviar{' '}
+                        {" "}
+                        Enviar{" "}
                       </Button>
 
                       <Button
                         onClick={eventModalAdd}
                         {...styles.propsBtnSubmitCancel}
                       >
-                        {' '}
-                        Cancelar{' '}
+                        {" "}
+                        Cancelar{" "}
                       </Button>
                     </div>
                   </Form>
@@ -352,7 +373,7 @@ const ViewElements = (props) => {
                 initialValues={{ ...person }}
                 validationSchema={personSchema}
                 onSubmit={(values) => {
-                  eventSubmitEdit(values)
+                  eventSubmitEdit(values);
                 }}
               >
                 {() => (
@@ -427,15 +448,15 @@ const ViewElements = (props) => {
                         className="btnSubmit"
                         {...styles.propsBtnSubmitEditPush}
                       >
-                        {' '}
-                        Editar{' '}
+                        {" "}
+                        Editar{" "}
                       </Button>
                       <Button
                         {...styles.propsBtnSubmitEditCancel}
                         onClick={eventModalEdit}
                       >
-                        {' '}
-                        Cancelar{' '}
+                        {" "}
+                        Cancelar{" "}
                       </Button>
                     </div>
                   </Form>
@@ -466,11 +487,11 @@ const ViewElements = (props) => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {'Eliminar elemento'}
+            {"Eliminar elemento"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              El siguiente elemento se eliminara, seguro que quieres eliminar a{' '}
+              El siguiente elemento se eliminara, seguro que quieres eliminar a{" "}
               {<b>{person.Name}</b>}?
             </DialogContentText>
           </DialogContent>
@@ -489,14 +510,14 @@ const ViewElements = (props) => {
 
         <Dialog
           fullWidth={true}
-          maxWidth={'lg'}
+          maxWidth={"lg"}
           open={modalView}
           onClose={eventModalView}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {'Vista de elemento'}
+            {"Vista de elemento"}
             <div className="btnDelete">
               <Button onClick={eventModalView}>
                 <CloseIcon />
@@ -509,19 +530,19 @@ const ViewElements = (props) => {
                 <TableHead>
                   <TableRow>
                     <TableCell align="center">
-                      {General.secondColumn[0]}{' '}
+                      {General.secondColumn[0]}{" "}
                     </TableCell>
                     <TableCell align="center">
-                      {General.secondColumn[1]}{' '}
+                      {General.secondColumn[1]}{" "}
                     </TableCell>
                     <TableCell align="center">
-                      {General.secondColumn[2]}{' '}
+                      {General.secondColumn[2]}{" "}
                     </TableCell>
                     <TableCell align="center">
-                      {General.secondColumn[3]}{' '}
+                      {General.secondColumn[3]}{" "}
                     </TableCell>
                     <TableCell align="center">
-                      {General.secondColumn[4]}{' '}
+                      {General.secondColumn[4]}{" "}
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -541,7 +562,7 @@ const ViewElements = (props) => {
         </Dialog>
       </div>
     </ClickAwayListener>
-  )
-}
+  );
+};
 
-export default ViewElements
+export default ViewElements;
