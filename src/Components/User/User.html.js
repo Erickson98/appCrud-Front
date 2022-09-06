@@ -228,7 +228,6 @@ const User = (props) => {
                         defaultValue={User.Rol}
                         onChange={handleChangeMenu}
                       >
-                        <MenuItem value={"Admin"}>Admin</MenuItem>
                         <MenuItem value={"Invite"}>Invitado</MenuItem>
                         <MenuItem value={"Creational"}>Creacional</MenuItem>
                         <MenuItem value={"New"}>Nuevo</MenuItem>
